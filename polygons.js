@@ -66,7 +66,7 @@ function select(n) {
     drawPolygon(context, sortedPolygon, "#888", "#88f");
     drawRef(context, polygons[n]);
     drawLines(context, polygons[n]);
-    document.querySelector('.sorted').textContent = polygons[n];
+    document.querySelector('.sorted').textContent = sortedPolygon;
 }
 
 const polygons = [
