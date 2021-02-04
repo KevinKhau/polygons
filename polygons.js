@@ -58,8 +58,8 @@ function drawLines(context, polygon) {
     context.closePath();
 }
 
-const select = function(n) {
-    var context = document.getElementById("canvas").getContext("2d");
+function select(n) {
+    const context = document.getElementById("canvas").getContext("2d");
     context.clearRect(0, 0, 500, 500);
     document.querySelector('.initial').textContent = polygons[n];
     const sortedPolygon = orderVertices ? sort(polygons[n]) : polygons[n];
@@ -67,7 +67,7 @@ const select = function(n) {
     drawRef(context, polygons[n]);
     drawLines(context, polygons[n]);
     document.querySelector('.sorted').textContent = polygons[n];
-};
+}
 
 const polygons = [
     [[400, 250], [100, 300], [100, 100], [300, 400], [300, 0]],
