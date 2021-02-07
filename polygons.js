@@ -20,9 +20,9 @@ function drawVertices(context, polygon, strokeStyle) {
         drawCircle(context, vertex, 5, strokeStyle);
     }
     context.beginPath();
-    context.moveTo(polygon[0][0] * scale, polygon[0][1] * scale); //first vertex
+    context.moveTo(x(polygon[0]), y(polygon[0])); //first vertex
     for (const vertex of polygon) {
-        context.lineTo(vertex[0] * scale, vertex[1] * scale);
+        context.lineTo(x(vertex), y(vertex));
     }
     context.lineWidth = 3;
     context.stroke();
@@ -32,11 +32,11 @@ function drawVertices(context, polygon, strokeStyle) {
 function drawPolygon(context, polygon, strokeStyle, fillStyle) {
     context.strokeStyle = strokeStyle;
     context.beginPath();
-    context.moveTo(polygon[0][0] * scale, polygon[0][1] * scale); //first vertex
+    context.moveTo(x(polygon[0]), y(polygon[0])); //first vertex
     for (let i = 1; i < polygon.length; i++)
-        context.lineTo(polygon[i][0] * scale, polygon[i][1] * scale);
+        context.lineTo(x(polygon[i]), y(polygon[i]));
     if (fillStyle) {
-        context.lineTo(polygon[0][0] * scale, polygon[0][1] * scale); //back to start
+        context.lineTo(x(polygon[0]), y(polygon[0])); //back to start
         context.fillStyle = fillStyle;
         context.fill();
     } else {
@@ -67,14 +67,14 @@ function avg(a, b) {
     return ~~((a + b)/2);
 }
 function drawLines(context, polygon) {
-    const centroid = getRef(polygon);
+    const ref = getRef(polygon);
     context.beginPath();
     for (const vertex of polygon) {
-        context.moveTo(centroid[0] * scale, centroid[1] * scale);
-        context.lineTo(vertex[0] * scale, vertex[1] * scale);
-        context.font = "30px Arial";
+        context.moveTo(x(ref), y(ref));
+        context.lineTo(x(vertex), y(vertex));
+        context.font = "18px Arial";
         context.fillStyle = "green";
-        context.fillText(`${Math.round(getAngle(centroid, vertex))}°`, avg(centroid[0], vertex[0]) * scale, avg(centroid[1], vertex[1]) * scale);
+        context.fillText(`${Math.round(getAngle(ref, vertex))}°`, avg(x(ref), x(vertex)), avg(y(ref), y(vertex)));
     }
     context.lineWidth = 2;
     context.strokeStyle = '#5de337';
@@ -84,6 +84,7 @@ function drawLines(context, polygon) {
 
 function select(battleName) {
     const {A, B} = battles[battleName];
+    document.querySelector('span.initial').textContent = A;
 
     setScale(A, B);
     canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
@@ -92,12 +93,11 @@ function select(battleName) {
     drawVertices(initialCanvas, A, '#88f');
     drawVertices(initialCanvas, B, '#8f8');
 
-    document.querySelector('span.initial').textContent = A;
     const sortedA = sort(A), sortedB = sort(B);
 
-    drawPolygon(sortingCanvas, B, "#888", '#8f8');
-    drawRef(sortingCanvas, B);
-    drawLines(sortingCanvas, B);
+    drawPolygon(sortingCanvas, sortedB, "#888", '#8f8');
+    drawRef(sortingCanvas, sortedB);
+    drawLines(sortingCanvas, sortedB);
 
     drawPolygon(clippingCanvas, A, "#888", "#88f");
     drawRef(clippingCanvas, A);
