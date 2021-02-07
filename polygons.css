@@ -1,0 +1,11 @@
+.figures > .description {
+    display: inline-block;
+}
+
+canvas {
+    border: 1px solid black;
+}
+
+.buttons > button {
+    display: inline-block;
+}

@@ -1,12 +1,5 @@
 import {battles} from './input.js';
 
-
-const polygons = [
-    [[400, 250], [100, 300], [100, 100], [300, 400], [300, 0]],
-    [[300, 300], [300, 100], [-100, 400], [0, 0]],
-    [[50, 150], [150, 350], [350, 150], [200, 50], [250, 320], [100, 250], [350, 250], [200, 250]],
-    [[400, 300], [100, 100], [100, 300], [300, 100]]
-];
 console.log(battles);
 
 const getAngle = (vertex, other) => Math.atan2(other[1] - vertex[1], other[0] - vertex[0]) * 180 / Math.PI;
@@ -40,7 +33,7 @@ function drawPolygon(context, polygon, strokeStyle, fillStyle) {
 function drawRef(context, polygon) {
     const centroid = getRef(polygon);
     context.beginPath();
-    context.arc(centroid[0], centroid[1], 10, 0, 2 * Math.PI);
+    context.arc(centroid[0] * scale, centroid[1] * scale, 10, 0, 2 * Math.PI);
     context.fillStyle = 'red';
     context.fill();
     context.lineWidth = 2;
@@ -57,11 +50,11 @@ function drawLines(context, polygon) {
     const centroid = getRef(polygon);
     context.beginPath();
     for (const vertex of polygon) {
-        context.moveTo(centroid[0], centroid[1]);
-        context.lineTo(vertex[0], vertex[1]);
+        context.moveTo(centroid[0] * scale, centroid[1] * scale);
+        context.lineTo(vertex[0] * scale, vertex[1] * scale);
         context.font = "30px Arial";
         context.fillStyle = "green";
-        context.fillText(`${Math.round(getAngle(centroid, vertex))}°`, avg(centroid[0], vertex[0]), avg(centroid[1], vertex[1]));
+        context.fillText(`${Math.round(getAngle(centroid, vertex))}°`, avg(centroid[0], vertex[0]) * scale, avg(centroid[1], vertex[1]) * scale);
     }
     context.lineWidth = 2;
     context.strokeStyle = '#5de337';
@@ -110,26 +103,73 @@ function clip (subjectPolygon, clipPolygon) {
 let scale = 200;
 function select(battleName) {
     const {A, B} = battles[battleName];
+    setScale(A, B);
+    canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
+    setGrids();
     console.log({A, B});
-    const context = document.getElementById("canvas").getContext("2d");
-    context.clearRect(0, 0, 500, 500);
-    document.querySelector('.initial').textContent = A;
+    const initialCanvas = document.querySelector('canvas.initial ').getContext("2d");
+    drawPolygon(initialCanvas, A, "#888", "#88f");
+    drawPolygon(initialCanvas, B, '#888','#8f8');
+
+    document.querySelector('span.initial').textContent = A;
     const sortedA = sort(A), sortedB = sort(B);
-    scale = 50;
-    drawPolygon(context, A, "#888", "#88f");
-    drawRef(context, A);
-    drawLines(context, A);
-    drawPolygon(context, B, '#888','#8f8');
-    drawPolygon(context, clip(sortedA, sortedB), '#000','#0ff');
-    document.querySelector('.sorted').textContent = sortedA;
+
+    const sortingCanvas = document.querySelector('canvas.sorting').getContext("2d");
+    drawPolygon(sortingCanvas, B, "#888", '#8f8');
+    drawRef(sortingCanvas, B);
+    drawLines(sortingCanvas, B);
+
+    const resultCanvas = document.querySelector('canvas.result').getContext("2d");
+    drawPolygon(resultCanvas, A, "#888", "#88f");
+    drawRef(resultCanvas, A);
+    drawLines(resultCanvas, A);
+    drawPolygon(resultCanvas, B, '#888','#8f8');
+    drawPolygon(resultCanvas, clip(sortedA, sortedB), '#000','#0ff');
+    document.querySelector('span.sorted').textContent = sortedA;
+}
+const canvas = [...document.querySelectorAll('canvas')].map(c => c.getContext('2d'));
+const grids = [...document.querySelectorAll('canvas.grid')].map(c => c.getContext('2d'));
+const size = 400;
+
+function setCanvas() {
+    canvas.forEach(c => {
+            c.canvas.width = size;
+            c.canvas.height = size;
+            c.translate(size / 2, size / 2);
+        }
+    );
+}
+function setGrids() {
+    grids.forEach(c => {
+        c.strokeStyle = 'lightgrey';
+        c.beginPath();
+        for (let i = -200; i < 200; i += scale) {
+            c.moveTo(-200, i);
+            c.lineTo(200, i);
+        }
+        for (let i = -200; i < 200; i += scale) {
+            c.moveTo(i, -200);
+            c.lineTo(i, 200);
+        }
+        c.stroke();
+        c.closePath();
+    })
+}
+
+/**
+ * Sets the scale, size in pixels of one unit, units ranging from -16 to +16.
+ * @param A
+ * @param B
+ */
+function setScale(A, B) {
+    scale = size / Math.max(...A.flat(2).map(Math.abs), ...B.flat(2).map(Math.abs));
 }
 
 const buttons = document.querySelectorAll("button");
 Object.keys(battles).forEach((battle, index) => {
     buttons[index].textContent = battle.charAt(0).toUpperCase() + battle.slice(1).replace(/([A-Z])/g, ' $1').trim();
-    buttons[index].addEventListener("click", function(){
-        window.onload = select(battle);
-    });
+    buttons[index].addEventListener("click", () => window.onload = select(battle));
 })
 
+setCanvas();
 window.onload = select('firstContact');
