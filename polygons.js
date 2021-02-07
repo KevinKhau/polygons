@@ -99,11 +99,11 @@ function select(battleName) {
     drawRef(sortingCanvas, sortedB);
     drawLines(sortingCanvas, sortedB);
 
-    drawPolygon(clippingCanvas, A, "#888", "#88f");
-    drawRef(clippingCanvas, A);
-    drawLines(clippingCanvas, A);
-    drawPolygon(clippingCanvas, B, '#888','#8f8');
-    drawPolygon(clippingCanvas, clip(sortedA, sortedB), '#000','#0ff');
+    drawPolygon(clippingCanvas, sortedA, "#888", "#88f");
+    drawPolygon(clippingCanvas, sortedB, '#888','#8f8');
+    const clippedPolygon = clip(sortedA, sortedB);
+    if (clippedPolygon.length)
+        drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
     document.querySelector('span.sorted').textContent = sortedA;
 }
 
