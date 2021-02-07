@@ -1,6 +1,6 @@
 import {battles} from './input.js';
 /* Set reference vertex for clockwise sorting here */
-import {clip, sort, getRef, getAngle} from './geometry.js';
+import {clip, sort, getRef, getAngle, getArea} from './geometry.js';
 
 console.log(battles);
 
@@ -108,6 +108,7 @@ function select(battleName) {
     if (clippedPolygon.length)
         drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
     drawGrid(areaCanvas);
+    document.querySelector('div p span.area.value').textContent = getArea(clippedPolygon).toFixed(2);
 
     document.querySelector('span.sorted').textContent = sortedA;
 }
@@ -117,9 +118,7 @@ const initialCanvas = document.querySelector('canvas.initial ').getContext("2d")
 const sortingCanvas = document.querySelector('canvas.sorting').getContext("2d");
 const clippingCanvas = document.querySelector('canvas.clipping').getContext("2d");
 const areaCanvas = document.querySelector('canvas.area').getContext("2d");
-
 const canvas = [initialCanvas, sortingCanvas, clippingCanvas, areaCanvas];
-const grids = [...document.querySelectorAll('canvas.grid')].map(c => c.getContext('2d'));
 const size = 400;
 
 function setCanvas() {

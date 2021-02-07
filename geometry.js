@@ -56,3 +56,19 @@ export function clip (subjectPolygon, clipPolygon) {
     }
     return outputList;
 }
+
+
+/**
+ * Get area of a polygon/surface.
+ */
+export function getArea(polygon) {
+    let total = 0;
+    for (let i = 0; i < polygon.length; i++) {
+        const addX = polygon[i][0]; // x
+        const addY = polygon[i === polygon.length - 1 ? 0 : i + 1][1];
+        const subX = polygon[i === polygon.length - 1 ? 0 : i + 1][0];
+        const subY = polygon[i][1]; //y
+        total += (addX * addY * 0.5) - (subX * subY * 0.5);
+    }
+    return Math.abs(total);
+}
