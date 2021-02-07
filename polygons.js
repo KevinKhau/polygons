@@ -88,8 +88,8 @@ function select(battleName) {
 
     setScale(A, B);
     canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
-    drawGrids();
 
+    drawGrid(initialCanvas);
     drawVertices(initialCanvas, A, '#88f');
     drawVertices(initialCanvas, B, '#8f8');
 
@@ -104,6 +104,11 @@ function select(battleName) {
     const clippedPolygon = clip(sortedA, sortedB);
     if (clippedPolygon.length)
         drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
+
+    if (clippedPolygon.length)
+        drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
+    drawGrid(areaCanvas);
+
     document.querySelector('span.sorted').textContent = sortedA;
 }
 
@@ -125,25 +130,24 @@ function setCanvas() {
         }
     );
 }
-function drawGrids() {
-    grids.forEach(ctx => {
-        ctx.strokeStyle = 'lightgrey';
-        ctx.fillStyle = 'blue';
-        ctx.font = '12px';
-        ctx.fillText('0', 2, -2);
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let i = -size / 2; i < size / 2; i += scale) {
-            ctx.moveTo(-size / 2, i);
-            ctx.lineTo(size / 2, i);
-        }
-        for (let i = -size / 2; i < size / 2; i += scale) {
-            ctx.moveTo(i, -size / 2);
-            ctx.lineTo(i, size / 2);
-        }
-        ctx.stroke();
-        ctx.closePath();
-    })
+
+function drawGrid(ctx) {
+    ctx.strokeStyle = 'lightgrey';
+    ctx.fillStyle = 'lightgrey';
+    ctx.font = '12px';
+    ctx.fillText('0', 2, -2);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = -size / 2; i < size / 2; i += scale) {
+        ctx.moveTo(-size / 2, i);
+        ctx.lineTo(size / 2, i);
+    }
+    for (let i = -size / 2; i < size / 2; i += scale) {
+        ctx.moveTo(i, -size / 2);
+        ctx.lineTo(i, size / 2);
+    }
+    ctx.stroke();
+    ctx.closePath();
 }
 
 /**
