@@ -1,9 +1,17 @@
 import {battles} from './input.js';
 /* Set reference vertex for clockwise sorting here */
-import {clip, sort, getRef, getAngle, getArea} from './geometry.js';
+import {clip, sort, getAngle, getArea, getRef, changeRef} from './geometry.js';
 
 const x = vertex => vertex[0] * scale;
 const y = vertex => vertex[1] * scale;
+let scale, A, B, sortedA, sortedB, clippedPolygon;
+const initialCanvas = document.querySelector('.initial canvas').getContext("2d");
+const sortingCanvas = document.querySelector('.sorting canvas').getContext("2d");
+const clippingCanvas = document.querySelector('.clipping canvas').getContext("2d");
+const areaCanvas = document.querySelector('.area canvas').getContext("2d");
+const canvas = [initialCanvas, sortingCanvas, clippingCanvas, areaCanvas];
+const size = 400;
+
 
 /**
  * Outlines the initial vertices in figure #1.
@@ -81,7 +89,7 @@ function drawLines(context, polygon) {
 }
 
 function select(battleName) {
-    const {A, B} = battles[battleName];
+    ({A, B} = battles[battleName]);
 
     setScale(A, B);
     canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
@@ -92,39 +100,37 @@ function select(battleName) {
     document.querySelector('.initial .A span').textContent = display(A);
     document.querySelector('.initial .B span').textContent = display(B);
 
-    const sortedA = sort(A), sortedB = sort(B);
+    setSorted();
 
-    drawPolygon(sortingCanvas, sortedA, "#888", '#88f');
-    drawRef(sortingCanvas, sortedA);
-    drawLines(sortingCanvas, sortedA);
-    document.querySelector('.sorting .A span').textContent = display(sortedA);
-    document.querySelector('.sorting .B span').textContent = display(sortedB);
-
-    drawPolygon(clippingCanvas, sortedA, "#888", "#88f");
-    drawPolygon(clippingCanvas, sortedB, '#888','#8f8');
-    const clippedPolygon = clip(sortedA, sortedB);
-    if (clippedPolygon.length)
-        drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
-    document.querySelector('.clipping .clipped span').textContent = display(clippedPolygon);
+    drawSorting();
+    drawClipping(sortedA, sortedB);
 
     if (clippedPolygon.length)
         drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
     drawGrid(areaCanvas);
     document.querySelector('.figure.area .clipped.area span').textContent = getArea(clippedPolygon).toFixed(2);
+}
 
+function drawSorting() {
+    drawPolygon(sortingCanvas, sortedA, "#888", '#88f');
+    drawRef(sortingCanvas, sortedA);
+    drawLines(sortingCanvas, sortedA);
+    document.querySelector('.sorting .A span').textContent = display(sortedA);
+    document.querySelector('.sorting .B span').textContent = display(sortedB);
+}
+
+function drawClipping() {
+    drawPolygon(clippingCanvas, sortedA, "#888", "#88f");
+    drawPolygon(clippingCanvas, sortedB, '#888','#8f8');
+    clippedPolygon = clip(sortedA, sortedB);
+    if (clippedPolygon.length)
+        drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
+    document.querySelector('.clipping .clipped span').textContent = display(clippedPolygon);
 }
 
 function display(polygon) {
     return polygon.map(vertex => vertex.map(coordinate => +(coordinate).toFixed(1))).join(' ; ');
 }
-
-let scale;
-const initialCanvas = document.querySelector('.initial canvas').getContext("2d");
-const sortingCanvas = document.querySelector('.sorting canvas').getContext("2d");
-const clippingCanvas = document.querySelector('.clipping canvas').getContext("2d");
-const areaCanvas = document.querySelector('.area canvas').getContext("2d");
-const canvas = [initialCanvas, sortingCanvas, clippingCanvas, areaCanvas];
-const size = 400;
 
 function setCanvas() {
     canvas.forEach(c => {
@@ -154,6 +160,11 @@ function drawGrid(ctx) {
     ctx.closePath();
 }
 
+function setSorted() {
+    sortedA = sort(A);
+    sortedB = sort(B);
+}
+
 /**
  * Sets the scale, size in pixels of one unit, units ranging from -16 to +16.
  * @param A
@@ -163,10 +174,16 @@ function setScale(A, B) {
     scale = size / Math.max(...A.flat(2).map(Math.abs), ...B.flat(2).map(Math.abs)) / 2;
 }
 
-const buttons = document.querySelectorAll("button");
-Object.keys(battles).forEach((battle, index) => {
-    buttons[index].textContent = battle.charAt(0).toUpperCase() + battle.slice(1).replace(/([A-Z])/g, ' $1').trim();
-    buttons[index].addEventListener("click", () => window.onload = select(battle));
+const buttons = document.querySelectorAll('.buttons.polygons button');
+Object.keys(battles).forEach((battleName, index) => {
+    buttons[index].textContent = battleName.charAt(0).toUpperCase() + battleName.slice(1).replace(/([A-Z])/g, ' $1').trim();
+    buttons[index].addEventListener("click", () => window.onload = select(battleName));
+})
+document.querySelector('button.ref').addEventListener('click', () => {
+    changeRef();
+    setSorted();
+    sortingCanvas.clearRect(-size, -size, size * 2, size * 2);
+    drawSorting();
 })
 
 setCanvas();

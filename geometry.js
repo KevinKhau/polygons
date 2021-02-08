@@ -2,14 +2,22 @@
 
 export const getAngle = (vertex, other) => Math.atan2(other[1] - vertex[1], other[0] - vertex[0]) * 180 / Math.PI;
 
-const getCentroid = polygon => polygon.reduce((acc, vertex, _, {length}) => [acc[0] + vertex[0] / length, acc[1] + vertex[1] / length], [0, 0]);
-const getLeftBottom = polygon => polygon.sort((a, b) => a[0] - b[0] !== 0 ? a[0] - b[0] : b[1] - a[1])[0];
-export const getRef = getCentroid;
+export const getCentroid = polygon => polygon.reduce((acc, vertex, _, {length}) => [acc[0] + vertex[0] / length, acc[1] + vertex[1] / length], [0, 0]);
+export const getLeftBottom = polygon => polygon.sort((a, b) => a[0] - b[0] !== 0 ? a[0] - b[0] : b[1] - a[1])[0];
+
+export let getRef = getCentroid;
+export function changeRef() {
+    getRef = getRef === getLeftBottom ? getCentroid : getLeftBottom;
+}
 
 /* Sort the polygon vertices in clockwise order */
 export function sort(polygon) {
-    const centroid = getRef(polygon);
-    return [...polygon].sort((u, v) => getAngle(centroid, u) - getAngle(centroid, v));
+    const ref = getRef(polygon);
+    return [...polygon].sort((u, v) => {
+        if (u === ref) return -180;
+        else if (v === ref) return 180;
+        else return getAngle(ref, u) - getAngle(ref, v)
+    });
 }
 
 /**
