@@ -2,8 +2,6 @@ import {battles} from './input.js';
 /* Set reference vertex for clockwise sorting here */
 import {clip, sort, getRef, getAngle, getArea} from './geometry.js';
 
-console.log(battles);
-
 const x = vertex => vertex[0] * scale;
 const y = vertex => vertex[1] * scale;
 
@@ -56,7 +54,7 @@ function drawCircle(context, vertex, radius = 5, fill, stroke = false) {
     context.fillStyle = fill;
     context.fill();
     if (stroke) {
-        context.lineWidth = 2;
+        context.lineWidth = 1;
         context.strokeStyle = '#003300';
         context.stroke();
     }
@@ -73,18 +71,17 @@ function drawLines(context, polygon) {
         context.moveTo(x(ref), y(ref));
         context.lineTo(x(vertex), y(vertex));
         context.font = "18px Arial";
-        context.fillStyle = "green";
+        context.fillStyle = '#5a5ce0';
         context.fillText(`${Math.round(getAngle(ref, vertex))}°`, avg(x(ref), x(vertex)), avg(y(ref), y(vertex)));
     }
     context.lineWidth = 2;
-    context.strokeStyle = '#5de337';
+    context.strokeStyle = '#5a5ce0';
     context.stroke();
     context.closePath();
 }
 
 function select(battleName) {
     const {A, B} = battles[battleName];
-    document.querySelector('span.initial').textContent = A;
 
     setScale(A, B);
     canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
@@ -92,32 +89,41 @@ function select(battleName) {
     drawGrid(initialCanvas);
     drawVertices(initialCanvas, A, '#88f');
     drawVertices(initialCanvas, B, '#8f8');
+    document.querySelector('.initial .A span').textContent = display(A);
+    document.querySelector('.initial .B span').textContent = display(B);
 
     const sortedA = sort(A), sortedB = sort(B);
 
-    drawPolygon(sortingCanvas, sortedB, "#888", '#8f8');
-    drawRef(sortingCanvas, sortedB);
-    drawLines(sortingCanvas, sortedB);
+    drawPolygon(sortingCanvas, sortedA, "#888", '#88f');
+    drawRef(sortingCanvas, sortedA);
+    drawLines(sortingCanvas, sortedA);
+    document.querySelector('.sorting .A span').textContent = display(sortedA);
+    document.querySelector('.sorting .B span').textContent = display(sortedB);
 
     drawPolygon(clippingCanvas, sortedA, "#888", "#88f");
     drawPolygon(clippingCanvas, sortedB, '#888','#8f8');
     const clippedPolygon = clip(sortedA, sortedB);
     if (clippedPolygon.length)
         drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
+    document.querySelector('.clipping .clipped span').textContent = display(clippedPolygon);
 
     if (clippedPolygon.length)
         drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
     drawGrid(areaCanvas);
-    document.querySelector('div p span.area.value').textContent = getArea(clippedPolygon).toFixed(2);
+    document.querySelector('div p span.area.value').textContent = getArea(clippedPolygon).toFixed(1);
 
     document.querySelector('span.sorted').textContent = sortedA;
 }
 
-let scale = 200;
-const initialCanvas = document.querySelector('canvas.initial ').getContext("2d");
-const sortingCanvas = document.querySelector('canvas.sorting').getContext("2d");
-const clippingCanvas = document.querySelector('canvas.clipping').getContext("2d");
-const areaCanvas = document.querySelector('canvas.area').getContext("2d");
+function display(polygon) {
+    return polygon.map(vertex => vertex.map(coordinate => +(coordinate).toFixed(1))).join(' ; ');
+}
+
+let scale;
+const initialCanvas = document.querySelector('.initial canvas').getContext("2d");
+const sortingCanvas = document.querySelector('.sorting canvas').getContext("2d");
+const clippingCanvas = document.querySelector('.clipping canvas').getContext("2d");
+const areaCanvas = document.querySelector('.area canvas').getContext("2d");
 const canvas = [initialCanvas, sortingCanvas, clippingCanvas, areaCanvas];
 const size = 400;
 
@@ -133,7 +139,7 @@ function setCanvas() {
 function drawGrid(ctx) {
     ctx.strokeStyle = 'lightgrey';
     ctx.fillStyle = 'lightgrey';
-    ctx.font = '12px';
+    ctx.font = '18px Arial';
     ctx.fillText('0', 2, -2);
     ctx.lineWidth = 1;
     ctx.beginPath();

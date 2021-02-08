@@ -18,36 +18,33 @@
     <button>Polygon 3</button>
     <button>Polygon 3</button>
 </div>
-<div>
-    <p>Initial vertices: <span class="initial"></span></p>
-    <p>Clockwise sorted vertices: <span class="sorted"></span></p>
-    <p>Polygon area : <span id='area'></span></p>
-</div>
 
 <div class="figures">
 
-    <div class="description">
+    <div class="figure initial">
         <h4 class="Title">Highlighting given vertices</h4>
-        <p>Tata</p>
-        <canvas class="initial grid"></canvas>
+        <p class="A">A vertices: <span></span></p>
+        <p class="B">B vertices: <span></span></p>
+        <canvas class="grid"></canvas>
     </div>
 
-    <div class="description">
+    <div class="figure sorting">
         <h4 class="title">Sorting vertices clockwise, using a polar angle</h4>
-        <p>Tata</p>
-        <canvas class="sorting"></canvas>
+        <p class="A">A vertices, sorted clockwise: <span></span></p>
+        <p class="B">B vertices, sorted clockwise: <span></span></p>
+        <canvas></canvas>
     </div>
 
-    <div class="description">
+    <div class="figure clipping">
         <h4 class="title">Sutherland–Hodgman polygon clipping algorithm</h4>
-        <p></p>
-        <canvas class="clipping"></canvas>
+        <p class="clipped">Clipped area vertices: <span></span></p>
+        <canvas></canvas>
     </div>
 
-    <div class="description">
+    <div class="figure area">
         <h4 class="title">Calculating the clipped polygon area</h4>
         <p>Surface of area: <span class="area value"></span></p>
-        <canvas class="area grid"></canvas>
+        <canvas class="grid"></canvas>
     </div>
 
 </div>
