@@ -12,7 +12,6 @@ const areaCanvas = document.querySelector('.area canvas').getContext("2d");
 const canvas = [initialCanvas, sortingCanvas, clippingCanvas, areaCanvas];
 const size = 400;
 
-
 /**
  * Outlines the initial vertices in figure #1.
  *
@@ -90,25 +89,21 @@ function drawLines(context, polygon) {
 
 function select(battleName) {
     ({A, B} = battles[battleName]);
-
     setScale(A, B);
     canvas.forEach(c => c.clearRect(-size, -size, size * 2, size * 2));
+    drawInitial();
+    setSorted();
+    drawSorting();
+    drawClipping();
+    drawArea();
+}
 
+function drawInitial() {
     drawGrid(initialCanvas);
     drawVertices(initialCanvas, A, '#88f');
     drawVertices(initialCanvas, B, '#8f8');
     document.querySelector('.initial .A span').textContent = display(A);
     document.querySelector('.initial .B span').textContent = display(B);
-
-    setSorted();
-
-    drawSorting();
-    drawClipping(sortedA, sortedB);
-
-    if (clippedPolygon.length)
-        drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
-    drawGrid(areaCanvas);
-    document.querySelector('.figure.area .clipped.area span').textContent = getArea(clippedPolygon).toFixed(2);
 }
 
 function drawSorting() {
@@ -126,6 +121,13 @@ function drawClipping() {
     if (clippedPolygon.length)
         drawPolygon(clippingCanvas, clippedPolygon, '#000','#0ff');
     document.querySelector('.clipping .clipped span').textContent = display(clippedPolygon);
+}
+
+function drawArea() {
+    if (clippedPolygon.length)
+        drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
+    drawGrid(areaCanvas);
+    document.querySelector('.figure.area .clipped.area span').textContent = getArea(clippedPolygon).toFixed(2);
 }
 
 function display(polygon) {
