@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="polygons.css">
 </head>
 <body>
-<!-- Original puzzle here: -->
-<!-- https://www.codingame.com/ide/puzzle/encounter-surface -->
 
 <div class="buttons">
     <button>Polygon 0</button>
@@ -22,32 +20,50 @@
 <div class="figures">
 
     <div class="figure initial">
-        <h4 class="Title">Highlighting given vertices</h4>
-        <p class="A">A vertices: <span></span></p>
-        <p class="B">B vertices: <span></span></p>
+        <h4 class="Title">Extracting polygon vertices</h4>
+        <p class="description">We are given a list of two <b>convex</b> polygon vertices, in random order.
+            The goal is to calculate their overlapping area. Below are the vertices given for each polygon</p>
+        <p class="A">A vertices, purple: <span></span></p>
+        <p class="B">B vertices, green: <span></span></p>
         <canvas class="grid"></canvas>
     </div>
 
     <div class="figure sorting">
-        <h4 class="title">Sorting vertices clockwise, using a polar angle</h4>
+        <h4 class="title">Sorting vertices clockwise, using a ref and polar angles</h4>
+        <p class="description">To sort a polygon vertices clockwise, we need any inner point, which could be
+            any of the vertices, the centroid, or actually any other point inside the polygon. This will be the
+            reference point. Then for every vertex, we calculate the polar angle between the x-axis and the vertex to
+            the reference point. Thus we can order the vertices according to the found angle.
+            You can <button class="ref">change the reference point</button> here.
+        </p>
         <p class="A">A vertices, sorted clockwise: <span></span></p>
         <p class="B">B vertices, sorted clockwise: <span></span></p>
         <canvas></canvas>
     </div>
 
     <div class="figure clipping">
-        <h4 class="title">Sutherland–Hodgman polygon clipping algorithm</h4>
+        <h4 class="title"><a href="https://en.m.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm">Sutherland–Hodgman</a> polygon clipping algorithm</h4>
+        <p>With a convex polygon whose vertices are sorted clockwise, we can now use the Sutherland-Hodgman algorithm. Original example
+            <a href="https://codepen.io/Saqoosha/pen/wpBaYw">here</a>.
+        </p>
         <p class="clipped">Clipped area vertices: <span></span></p>
         <canvas></canvas>
     </div>
 
     <div class="figure area">
         <h4 class="title">Calculating the clipped polygon area</h4>
-        <p>Surface of area: <span class="area value"></span></p>
+        <p class="description">Since we have all vertices of the polygon, we can calculate the polygon area, using a
+            <a href="https://stackoverflow.com/a/33670691/9527665">simple algorithm</a>.</p>
+        <p class="clipped area">Surface of area: <span></span></p>
         <canvas class="grid"></canvas>
     </div>
 
 </div>
+
+<p>
+    Original puzzle on CodinGame:
+    <a href="https://www.codingame.com/ide/puzzle/encounter-surface">Encounter Surface</a>
+</p>
 
 </body>
 </html>

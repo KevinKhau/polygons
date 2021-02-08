@@ -1,5 +1,6 @@
 .figures > .figure {
     display: inline-block;
+    width: 400px;
 }
 
 canvas {
@@ -8,4 +9,14 @@ canvas {
 
 .buttons > button {
     display: inline-block;
+}
+
+.A {
+    color: #88f;
+}
+.B {
+    color: #8e8;
+}
+.clipped {
+    color: #0ee;
 }

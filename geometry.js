@@ -57,7 +57,6 @@ export function clip (subjectPolygon, clipPolygon) {
     return outputList;
 }
 
-
 /**
  * Get area of a polygon/surface.
  */

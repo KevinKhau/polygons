@@ -110,9 +110,8 @@ function select(battleName) {
     if (clippedPolygon.length)
         drawPolygon(areaCanvas, clippedPolygon, '#000','#0ff');
     drawGrid(areaCanvas);
-    document.querySelector('div p span.area.value').textContent = getArea(clippedPolygon).toFixed(1);
+    document.querySelector('.figure.area .clipped.area span').textContent = getArea(clippedPolygon).toFixed(2);
 
-    document.querySelector('span.sorted').textContent = sortedA;
 }
 
 function display(polygon) {
