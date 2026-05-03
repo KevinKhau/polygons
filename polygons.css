@@ -1,22 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+h1, h4 {
+    color: #2c3e50;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.figures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
 .figures > .figure {
     display: inline-block;
     width: 400px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.figure h4 {
+    margin-top: 0;
+    font-size: 1.2em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
 }
 
 canvas {
-    border: 1px solid black;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    display: block;
+}
+
+.buttons {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .buttons > button {
     display: inline-block;
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.buttons > button:hover {
+    background-color: #2980b9;
 }
 
 .A {
     color: #88f;
 }
 .B {
-    color: #8e8;
+    color: #27ae60;
 }
 .clipped {
-    color: #0ee;
+    color: #e74c3c;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.button-container {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.button-container button {
+    padding: 8px 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-container button:hover {
+    background-color: #2980b9;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+main.figures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    color: #777;
 }

@@ -8,6 +8,8 @@
 </head>
 <body>
 
+<h1>Polygon Overlap Calculator</h1>
+
 <div class="buttons polygons">
     <button></button>
     <button></button>
@@ -17,11 +19,11 @@
     <button></button>
 </div>
 
-<div>
+<section class="intro">
     <p>This project demonstrates a solution to a <a href="https://www.codingame.com/ide/puzzle/encounter-surface">programming puzzle</a>. Given two polygon vertices, compute the area of their overlap.</p>
-</div>
+</section>
 
-<div class="figures">
+<main class="figures">
 
     <div class="figure initial">
         <h4 class="title">Extract polygon vertices</h4>
@@ -37,8 +39,10 @@
         <p class="description">To sort a polygon's vertices clockwise, we need any inner point, which could be
             a vertex or the centroid. This will be the <i>reference point</i>.
             Then for every vertex, we calculate the polar angle from the reference point to the vertex relative to the x-axis. Thus, we can order the vertices by their calculated angle.
-            You can <button class="ref">change the reference point</button> here.
         </p>
+        <div class="button-container">
+            <button class="ref">Change the reference point</button>
+        </div>
         <p class="A">A vertices, sorted clockwise: <span></span></p>
         <p class="B">B vertices, sorted clockwise: <span></span></p>
         <canvas></canvas>
@@ -61,12 +65,14 @@
         <canvas class="grid"></canvas>
     </div>
 
-</div>
+</main>
 
-<p>
-    Original puzzle on CodinGame:
-    <a href="https://www.codingame.com/ide/puzzle/encounter-surface">Encounter Surface</a>
-</p>
+<footer>
+    <p>
+        Original puzzle on CodinGame:
+        <a href="https://www.codingame.com/ide/puzzle/encounter-surface">Encounter Surface</a>
+    </p>
+</footer>
 
 </body>
 </html>
