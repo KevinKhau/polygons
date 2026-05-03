@@ -18,26 +18,25 @@
 </div>
 
 <div>
-    <p>This project explains the resolution of a <a href="https://www.codingame.com/ide/puzzle/encounter-surface">programming puzzle</a>. Given two polygon vertices, compute the area of their overlap.</p>
+    <p>This project demonstrates a solution to a <a href="https://www.codingame.com/ide/puzzle/encounter-surface">programming puzzle</a>. Given two polygon vertices, compute the area of their overlap.</p>
 </div>
 
 <div class="figures">
 
     <div class="figure initial">
-        <h4 class="Title">Extracting polygon vertices</h4>
-        <p class="description">We are given a list of two <b>convex</b> polygon vertices, in random order.
-            The goal is to calculate their overlapping area. Below are the vertices given for each polygon</p>
+        <h4 class="title">Extract polygon vertices</h4>
+        <p class="description">We are given the vertices of two <b>convex</b> polygons, in random order.
+            The goal is to calculate their overlapping area. Below are the (x,y) vertices given for each polygon.</p>
         <p class="A">A vertices, purple: <span></span></p>
         <p class="B">B vertices, green: <span></span></p>
         <canvas class="grid"></canvas>
     </div>
 
     <div class="figure sorting">
-        <h4 class="title">Sorting vertices clockwise, using a ref and polar angles</h4>
-        <p class="description">To sort a polygon vertices clockwise, we need any inner point, which could be
-            also be a vertex or the centroid. This will be the <i>reference point</i>.
-            Then for every vertex, we calculate the polar angle between the x-axis and the vertex to
-            the reference point. Thus we can order the vertices according to their found angle.
+        <h4 class="title">Sort vertices clockwise</h4>
+        <p class="description">To sort a polygon's vertices clockwise, we need any inner point, which could be
+            a vertex or the centroid. This will be the <i>reference point</i>.
+            Then for every vertex, we calculate the polar angle from the reference point to the vertex relative to the x-axis. Thus, we can order the vertices by their calculated angle.
             You can <button class="ref">change the reference point</button> here.
         </p>
         <p class="A">A vertices, sorted clockwise: <span></span></p>
@@ -46,8 +45,8 @@
     </div>
 
     <div class="figure clipping">
-        <h4 class="title"><a href="https://en.m.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm">Sutherland–Hodgman</a> polygon clipping algorithm</h4>
-        <p>With a convex polygon whose vertices are sorted clockwise, we can now use the Sutherland-Hodgman algorithm. Original example
+        <h4 class="title"><a href="https://en.m.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm">Apply Sutherland–Hodgman</a> polygon clipping algorithm</h4>
+        <p>With both convex polygons' vertices sorted clockwise, we can now apply the Sutherland-Hodgman algorithm to clip one against the other. Original example
             <a href="https://codepen.io/Saqoosha/pen/wpBaYw">here</a>.
         </p>
         <p class="clipped">Clipped area vertices: <span></span></p>
@@ -55,10 +54,10 @@
     </div>
 
     <div class="figure area">
-        <h4 class="title">Calculating the clipped polygon area</h4>
+        <h4 class="title">Calculate the clipped polygon area</h4>
         <p class="description">Since we have all vertices of the polygon, we can calculate the polygon area, using a
             <a href="https://stackoverflow.com/a/33670691/9527665">simple algorithm</a>.</p>
-        <p class="clipped area">Surface of area: <b><span></span></b></p>
+        <p class="clipped area">Area: <b><span></span></b></p>
         <canvas class="grid"></canvas>
     </div>
 
