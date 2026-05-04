@@ -62,7 +62,7 @@ function drawArea() {
 }
 
 function display(polygon) {
-    return polygon.map(vertex => vertex.map(coordinate => +(coordinate).toFixed(1))).join(' ; ');
+    return polygon.map(vertex => `(${vertex.map(coordinate => +(coordinate).toFixed(1)).join(',')})`).join(' • ');
 }
 
 function setCanvas() {
@@ -88,11 +88,13 @@ function setScale(A, B) {
     scale = size / Math.max(...A.flat(2).map(Math.abs), ...B.flat(2).map(Math.abs)) / 2;
 }
 
-const buttons = document.querySelectorAll('.buttons.polygons button');
-Object.keys(battles).forEach((battleName, index) => {
-    buttons[index].textContent = battleName.charAt(0).toUpperCase() + battleName.slice(1).replace(/([A-Z])/g, ' $1').trim();
-    buttons[index].addEventListener("click", () => window.onload = select(battleName));
-})
+const container = document.querySelector('.buttons.polygons');
+Object.keys(battles).forEach((battleName) => {
+    const button = document.createElement('button');
+    button.textContent = battleName.charAt(0).toUpperCase() + battleName.slice(1).replace(/([A-Z])/g, ' $1').trim();
+    button.addEventListener("click", () => window.onload = select(battleName));
+    container.appendChild(button);
+});
 document.querySelector('button.ref').addEventListener('click', () => {
     changeRef();
     setSorted();
